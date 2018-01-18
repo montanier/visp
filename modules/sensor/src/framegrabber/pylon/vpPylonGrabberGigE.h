@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -101,8 +102,7 @@ public:
   float setBlackLevel(float blacklevel_value = 0);
   void setCameraIndex(unsigned int index);
   void setCameraSerial(const std::string &serial);
-  float setExposure(bool exposure_on, bool exposure_auto,
-                    float exposure_value = 0);
+  float setExposure(bool exposure_on, bool exposure_auto, float exposure_value = 0);
   float setGain(bool gain_auto, float gain_value = 0);
   float setFrameRate(float frame_rate);
   float setGamma(bool gamma_on, float gamma_value = 1);
@@ -119,8 +119,8 @@ protected:
 private:
   Pylon::CBaslerGigEInstantCamera m_camera; //!< Pointer to each camera
   unsigned int m_index;                     //!< Active camera index
-  unsigned int m_numCameras; //!< Number of connected GigE cameras
-  bool m_connected;          //!< true if camera connected
+  unsigned int m_numCameras;                //!< Number of connected GigE cameras
+  bool m_connected;                         //!< true if camera connected
 };
 
 #endif // #ifdef VISP_HAVE_PYLON

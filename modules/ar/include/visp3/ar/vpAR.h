@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -37,7 +38,6 @@
  *
  *****************************************************************************/
 
-
 /*!
   \file vpAR.h
 
@@ -49,7 +49,6 @@
 
 */
 
-
 #ifndef vpAR_HH
 #define vpAR_HH
 
@@ -58,9 +57,9 @@
 #ifdef VISP_HAVE_COIN3D_AND_GUI
 
 // visp
+#include <visp3/core/vpCameraParameters.h>
 #include <visp3/core/vpDebug.h>
 #include <visp3/core/vpHomogeneousMatrix.h>
-#include <visp3/core/vpCameraParameters.h>
 
 #include <visp3/ar/vpSimulator.h>
 
@@ -88,11 +87,11 @@
   The code below shows how to use the class.
 
   \code
-#include <visp3/core/vpConfig.h>
 #include <visp3/ar/vpAR.h>
 #include <visp3/core/vpCameraParameters.h>
-#include <visp3/core/vpImage.h>
+#include <visp3/core/vpConfig.h>
 #include <visp3/core/vpHomogeneousMatrix.h>
+#include <visp3/core/vpImage.h>
 
 #ifdef VISP_HAVE_COIN3D_AND_GUI
 static void *mainloopfunction(void *_simu)
@@ -126,8 +125,9 @@ int main()
 
   vpTime::wait(300);
 
-  //Load the cad model.
-  simu.load("./4points.iv"); //4points.iv can be downloaded on the website with the image package
+  // Load the cad model. 4points.iv can be downloaded on the website
+  // with the image package
+  simu.load("./4points.iv");
 
   //Initialize the internal camera parameters.
   simu.setInternalCameraParameters(cam);
@@ -145,19 +145,16 @@ class VISP_EXPORT vpAR : public vpSimulator
 {
 
 private:
-
   bool background;
 
- public:
-  vpAR(): background(false) {};
+public:
+  vpAR() : background(false){};
 
-  virtual ~vpAR() ;
-  void initInternalViewer(const unsigned int width, const unsigned int height, vpImageType type = grayImage) ;
-  void setImage(vpImage<unsigned char> &I) ;
-  void setImage(vpImage<vpRGBa> &I) ;
-
-} ;
-
+  virtual ~vpAR();
+  void initInternalViewer(const unsigned int width, const unsigned int height, vpImageType type = grayImage);
+  void setImage(vpImage<unsigned char> &I);
+  void setImage(vpImage<vpRGBa> &I);
+};
 
 #endif
 #endif

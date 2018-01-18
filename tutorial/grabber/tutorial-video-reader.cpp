@@ -13,15 +13,15 @@
 
  Example: ./tutorial-video-reader --name video.mpg
  */
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 #if (VISP_HAVE_OPENCV_VERSION >= 0x020100)
   try {
     std::string videoname = "video.mpg";
 
-    for (int i=0; i<argc; i++) {
+    for (int i = 0; i < argc; i++) {
       if (std::string(argv[i]) == "--name")
-        videoname = std::string(argv[i+1]);
+        videoname = std::string(argv[i + 1]);
       else if (std::string(argv[i]) == "--help") {
         std::cout << "\nUsage: " << argv[0] << " [--name <video name>] [--help]\n" << std::endl;
         return 0;
@@ -53,7 +53,7 @@ int main(int argc, char** argv)
 #endif
     vpDisplay::setTitle(I, "Video reader");
     //! [vpVideoReader while loop]
-    while (! g.end() ) {
+    while (!g.end()) {
       //! [vpVideoReader while loop]
       //! [vpVideoReader loop start time]
       double t = vpTime::measureTimeMs();
@@ -63,13 +63,13 @@ int main(int argc, char** argv)
       //! [vpVideoReader acquire]
       vpDisplay::display(I);
       vpDisplay::flush(I);
-      if (vpDisplay::getClick(I, false)) break;
+      if (vpDisplay::getClick(I, false))
+        break;
       //! [vpVideoReader loop rate]
       vpTime::wait(t, 1000. / g.getFramerate());
       //! [vpVideoReader loop rate]
     }
-  }
-  catch(vpException &e) {
+  } catch (vpException &e) {
     std::cout << e.getMessage() << std::endl;
   }
 #else

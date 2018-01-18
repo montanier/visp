@@ -3,9 +3,10 @@
 # This file is part of the ViSP software.
 # Copyright (C) 2005 - 2017 by Inria. All rights reserved.
 #
-# This software is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# ("GPL") version 2 as published by the Free Software Foundation.
+# This software is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 # See the file LICENSE.txt at the root directory of this source
 # distribution for additional information about the GNU GPL.
 #
@@ -48,7 +49,7 @@
 #   - VISP_USE_FILE      : File to include to use ViSP without specific cmake code
 #
 # Windows specific variables:
-#   - VISP_STATIC        : If set to TRUE uses ViSP static library (.lib) rather then dynamic (.dll) 
+#   - VISP_STATIC        : If set to TRUE uses ViSP static library (.lib) rather then dynamic (.dll)
 #
 # Typical usage in user project:
 #
@@ -87,8 +88,10 @@ if(MSVC)
     set(VISP_RUNTIME vc12)
   elseif(MSVC_VERSION EQUAL 1900)
     set(VISP_RUNTIME vc14)
-  elseif(MSVC_VERSION EQUAL 1910 OR MSVC_VERSION EQUAL 1911)
+  elseif(MSVC_VERSION MATCHES "^191[0-9]$")
     set(VISP_RUNTIME vc15)
+  else()
+    message(WARNING "ViSP does not recognize MSVC_VERSION \"${MSVC_VERSION}\". Cannot set VISP_RUNTIME")
   endif()
 elseif(MINGW)
   set(VISP_RUNTIME mingw)

@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -51,8 +52,7 @@
    Default constructor that consider the first camera found on the bus as
    active.
  */
-vpPylonGrabberUsb::vpPylonGrabberUsb()
-  : m_camera(), m_index(0), m_numCameras(0), m_connected(false)
+vpPylonGrabberUsb::vpPylonGrabberUsb() : m_camera(), m_index(0), m_numCameras(0), m_connected(false)
 {
   getNumCameras();
 }
@@ -98,10 +98,8 @@ std::ostream &vpPylonGrabberUsb::getCameraInfo(std::ostream &os)
   os << " Serial number      : " << deviceInfo.GetSerialNumber() << std::endl;
   os << " Camera model       : " << deviceInfo.GetModelName() << std::endl;
   os << " Camera vendor      : " << deviceInfo.GetVendorName() << std::endl;
-  os << " Resolution         : " << widthMax->GetValue() << "x"
-     << heightMax->GetValue() << std::endl;
-  os << " Firmware version   : " << deviceInfo.GetDeviceVersion()
-     << std::endl;
+  os << " Resolution         : " << widthMax->GetValue() << "x" << heightMax->GetValue() << std::endl;
+  os << " Firmware version   : " << deviceInfo.GetDeviceVersion() << std::endl;
 
   return os;
 }
@@ -150,8 +148,7 @@ float vpPylonGrabberUsb::getGain()
   if (GenApi::IsReadable(m_camera.Gain))
     return m_camera.Gain.GetValue();
   else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to get gain.");
+    throw vpException(vpException::notImplementedError, "Don't know how to get gain.");
 }
 
 /*!
@@ -172,8 +169,7 @@ float vpPylonGrabberUsb::getBlackLevel()
   if (GenApi::IsReadable(m_camera.BlackLevel))
     return m_camera.BlackLevel.GetValue();
   else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to get blacklevel.");
+    throw vpException(vpException::notImplementedError, "Don't know how to get blacklevel.");
 }
 
 /*!
@@ -194,8 +190,7 @@ float vpPylonGrabberUsb::getExposure()
   if (GenApi::IsReadable(m_camera.ExposureTime))
     return m_camera.ExposureTime.GetValue() * 0.001;
   else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to get exposure.");
+    throw vpException(vpException::notImplementedError, "Don't know how to get exposure.");
 }
 
 /*!
@@ -223,10 +218,8 @@ std::string vpPylonGrabberUsb::getCameraSerial(unsigned int index)
   getNumCameras();
 
   if (index >= m_numCameras) {
-    throw(vpException(
-        vpException::badValue,
-        "The camera with index %u is not present. Only %d cameras connected.",
-        index, m_numCameras));
+    throw(vpException(vpException::badValue, "The camera with index %u is not present. Only %d cameras connected.",
+                      index, m_numCameras));
   }
 
   Pylon::CTlFactory &TlFactory = Pylon::CTlFactory::GetInstance();
@@ -275,8 +268,7 @@ vpPylonGrabber::UserSetName vpPylonGrabberUsb::getUserSetDefault()
 {
   connect();
 
-  Basler_UsbCameraParams::UserSetDefaultEnums user_set =
-      m_camera.UserSetDefault.GetValue();
+  Basler_UsbCameraParams::UserSetDefaultEnums user_set = m_camera.UserSetDefault.GetValue();
 
   switch (user_set) {
   case Basler_UsbCameraParams::UserSetDefault_Default:
@@ -315,10 +307,8 @@ vpPylonGrabber::UserSetName vpPylonGrabberUsb::getUserSetDefault()
 void vpPylonGrabberUsb::setCameraIndex(unsigned int index)
 {
   if (index >= m_numCameras) {
-    throw(vpException(
-        vpException::badValue,
-        "The camera with index %u is not present. Only %d cameras connected.",
-        index, m_numCameras));
+    throw(vpException(vpException::badValue, "The camera with index %u is not present. Only %d cameras connected.",
+                      index, m_numCameras));
   }
 
   m_index = index;
@@ -339,8 +329,7 @@ void vpPylonGrabberUsb::setCameraSerial(const std::string &serial)
       return;
     }
   }
-  throw(vpException(vpException::badValue,
-                    "The camera with serial id %u is not present.", serial));
+  throw(vpException(vpException::badValue, "The camera with serial id %s is not present.", serial.c_str()));
 }
 
 /*!
@@ -385,8 +374,7 @@ float vpPylonGrabberUsb::setGain(bool gain_auto, float gain_value)
     m_camera.Gain.SetValue(gain_value);
     return m_camera.Gain.GetValue();
   } else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to set gain.");
+    throw vpException(vpException::notImplementedError, "Don't know how to set gain.");
 }
 
 /*!
@@ -411,8 +399,7 @@ float vpPylonGrabberUsb::setBlackLevel(float blacklevel_value)
     m_camera.BlackLevel.SetValue(blacklevel_value);
     return m_camera.BlackLevel.GetValue();
   } else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to set blacklevel.");
+    throw vpException(vpException::notImplementedError, "Don't know how to set blacklevel.");
 }
 
 /*!
@@ -432,21 +419,17 @@ exposure applying \e exposure_value parameter.
   https://www.ptgrey.com/kb/11020?countryid=237
   \sa getExposure()
  */
-float vpPylonGrabberUsb::setExposure(bool exposure_on, bool exposure_auto,
-                                     float exposure_value)
+float vpPylonGrabberUsb::setExposure(bool exposure_on, bool exposure_auto, float exposure_value)
 {
   connect();
 
   if (exposure_on)
-    m_camera.ExposureMode.SetValue(
-        Basler_UsbCameraParams::ExposureMode_Timed);
+    m_camera.ExposureMode.SetValue(Basler_UsbCameraParams::ExposureMode_Timed);
   else
-    m_camera.ExposureMode.SetValue(
-        Basler_UsbCameraParams::ExposureMode_TriggerWidth);
+    m_camera.ExposureMode.SetValue(Basler_UsbCameraParams::ExposureMode_TriggerWidth);
 
   if (exposure_auto)
-    m_camera.ExposureAuto.SetValue(
-        Basler_UsbCameraParams::ExposureAuto_Continuous);
+    m_camera.ExposureAuto.SetValue(Basler_UsbCameraParams::ExposureAuto_Continuous);
   else
     m_camera.ExposureAuto.SetValue(Basler_UsbCameraParams::ExposureAuto_Off);
 
@@ -454,8 +437,7 @@ float vpPylonGrabberUsb::setExposure(bool exposure_on, bool exposure_auto,
     m_camera.ExposureTime.SetValue(exposure_value * 1000);
     return m_camera.ExposureTime.GetValue() * 0.001;
   } else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to set exposure.");
+    throw vpException(vpException::notImplementedError, "Don't know how to set exposure.");
 }
 
 /*!
@@ -481,8 +463,7 @@ float vpPylonGrabberUsb::setGamma(bool gamma_on, float gamma_value)
       m_camera.Gamma.SetValue(1);
     return m_camera.Gamma.GetValue();
   } else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to set gamma.");
+    throw vpException(vpException::notImplementedError, "Don't know how to set gamma.");
 }
 
 /*!
@@ -529,23 +510,19 @@ bool vpPylonGrabberUsb::setUserSetDefault(UserSetName user_set)
 
   switch (user_set) {
   case USERSET_DEFAULT:
-    m_camera.UserSetDefault.SetValue(
-        Basler_UsbCameraParams::UserSetDefault_Default);
+    m_camera.UserSetDefault.SetValue(Basler_UsbCameraParams::UserSetDefault_Default);
     return true;
     break;
   case USERSET_USERSET1:
-    m_camera.UserSetDefault.SetValue(
-        Basler_UsbCameraParams::UserSetDefault_UserSet1);
+    m_camera.UserSetDefault.SetValue(Basler_UsbCameraParams::UserSetDefault_UserSet1);
     return true;
     break;
   case USERSET_USERSET2:
-    m_camera.UserSetDefault.SetValue(
-        Basler_UsbCameraParams::UserSetDefault_UserSet2);
+    m_camera.UserSetDefault.SetValue(Basler_UsbCameraParams::UserSetDefault_UserSet2);
     return true;
     break;
   case USERSET_USERSET3:
-    m_camera.UserSetDefault.SetValue(
-        Basler_UsbCameraParams::UserSetDefault_UserSet3);
+    m_camera.UserSetDefault.SetValue(Basler_UsbCameraParams::UserSetDefault_UserSet3);
     return true;
     break;
   default:
@@ -663,9 +640,8 @@ void vpPylonGrabberUsb::acquire(vpImage<unsigned char> &I)
   Pylon::CGrabResultPtr grabResult;
   // Retrieve an image
   if (!m_camera.RetrieveResult(2000, grabResult)) {
-    throw(vpException(vpException::fatalError,
-                      "Cannot retrieve image from camera with serial %u",
-                      getCameraSerial(m_index)));
+    throw(vpException(vpException::fatalError, "Cannot retrieve image from camera with serial %s",
+                      getCameraSerial(m_index).c_str()));
   }
 
   if (grabResult->GrabSucceeded()) {
@@ -677,8 +653,7 @@ void vpPylonGrabberUsb::acquire(vpImage<unsigned char> &I)
     imageConvert.OutputPixelFormat = Pylon::PixelType_Mono8;
     imageConvert.OutputPaddingX = 0;
     // Create a converted image
-    imageConvert.Convert(I.bitmap, sizeof(unsigned char) * width * height,
-                         (Pylon::IImage &)grabResult);
+    imageConvert.Convert(I.bitmap, sizeof(unsigned char) * width * height, (Pylon::IImage &)grabResult);
   }
 }
 
@@ -694,9 +669,8 @@ void vpPylonGrabberUsb::acquire(vpImage<vpRGBa> &I)
   Pylon::CGrabResultPtr grabResult;
   // Retrieve an image
   if (!m_camera.RetrieveResult(2000, grabResult)) {
-    throw(vpException(vpException::fatalError,
-                      "Cannot retrieve image from camera with serial %u",
-                      getCameraSerial(m_index)));
+    throw(vpException(vpException::fatalError, "Cannot retrieve image from camera with serial %s",
+                      getCameraSerial(m_index).c_str()));
   }
 
   if (grabResult->GrabSucceeded()) {
@@ -774,23 +748,19 @@ bool vpPylonGrabberUsb::selectUserSet(UserSetName user_set)
 
   switch (user_set) {
   case USERSET_DEFAULT:
-    m_camera.UserSetSelector.SetValue(
-        Basler_UsbCameraParams::UserSetSelector_Default);
+    m_camera.UserSetSelector.SetValue(Basler_UsbCameraParams::UserSetSelector_Default);
     return true;
     break;
   case USERSET_USERSET1:
-    m_camera.UserSetSelector.SetValue(
-        Basler_UsbCameraParams::UserSetSelector_UserSet1);
+    m_camera.UserSetSelector.SetValue(Basler_UsbCameraParams::UserSetSelector_UserSet1);
     return true;
     break;
   case USERSET_USERSET2:
-    m_camera.UserSetSelector.SetValue(
-        Basler_UsbCameraParams::UserSetSelector_UserSet2);
+    m_camera.UserSetSelector.SetValue(Basler_UsbCameraParams::UserSetSelector_UserSet2);
     return true;
     break;
   case USERSET_USERSET3:
-    m_camera.UserSetSelector.SetValue(
-        Basler_UsbCameraParams::UserSetSelector_UserSet3);
+    m_camera.UserSetSelector.SetValue(Basler_UsbCameraParams::UserSetSelector_UserSet3);
     return true;
     break;
   default:

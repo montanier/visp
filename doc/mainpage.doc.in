@@ -22,6 +22,12 @@ href="http://www.inria.fr/en/centre/rennes" target="_parent">Inria Rennes</a>.</
 
 It is also possible to contact ViSP main developers using: <a href="mailto:visp@inria.fr?subject=[visp]">visp@inria.fr</a>
 
+\section arch_sec Software architecture
+
+Since ViSP 3.0.0, we design a new modular software architecture where ViSP capabilities are grouped in several modules (core, io, gui, vision, …). In ViSP 3.1.0 we introduced a new module called imgproc. As a result, the user will find several shared or static libraries, one for each module. The following figure highlights the module dependencies and the third-party libraries that may be used by each module. The central module is the core module. All other modules depend on core.
+
+\image html soft_archi_v6.png "ViSP modules and their optional dependencies"
+
 \section download_sec Download
 
 <p>From <a
@@ -69,11 +75,13 @@ href="https://visp.inria.fr/publications" target="_parent">https://visp.inria.fr
 - \ref tutorial-install-centos <br>In this other tutorial you will learn how to install ViSP from source on Linux CentOS.
 - \ref tutorial-install-opensuse <br>In this other tutorial you will learn how to install ViSP from source on Linux openSUSE.
 - \ref tutorial-install-raspberry <br>In this tutorial you will learn how to install ViSP from source on Raspberry Pi.
-- \ref tutorial-install-win7 <br>In this tutorial you will learn how to install ViSP from source on Windows 7 with Visual C++ 2012.
-- \ref tutorial-install-win81-msvc <br>In this tutorial you will learn how to install ViSP from source on Windows 8.1 with Visual C++ 2013.
-- \ref tutorial-install-win10-msvc14 <br>In this tutorial you will learn how to install ViSP from source on Windows 10 with Visual C++ 2015.
-- \ref tutorial-install-win10-msvc14-uwp <br>In this tutorial you will learn how to install ViSP from source on Windows 10 for Universal Windows Platform apps with Visual C++ 2015.
-- \ref tutorial-install-win81-mingw64 <br>In this tutorial you will learn how to install ViSP from source on Windows 8.1 or Windows 10 with Mingw-w64.
+- \ref tutorial-install-win7 <br>In this tutorial you will learn how to install ViSP from source on Windows 7 with Visual C++ 2012 (vc11).
+- \ref tutorial-install-win10-msvc12 <br>In this tutorial you will learn how to install ViSP from source on Windows 10 with Visual C++ 2013 (vc12).
+- \ref tutorial-install-win10-msvc14 <br>In this tutorial you will learn how to install ViSP from source on Windows 10 with Visual C++ 2015 (vc14).
+- \ref tutorial-install-win10-msvc15 <br>In this tutorial you will learn how to install ViSP from source on Windows 10 with Visual C++ 2017 (vc15).
+- \ref tutorial-install-win10-mingw64 <br>In this tutorial you will learn how to install ViSP from source on Windows 8.1 or Windows 10 with Mingw-w64.
+- \ref tutorial-install-win10-msvc14-uwp <br>In this tutorial you will learn how to install ViSP from source on Windows 10 for Universal Windows Platform apps with Visual C++ 2015 (vc14).
+- \ref tutorial-install-win10-msvc15-uwp <br>In this tutorial you will learn how to install ViSP from source on Windows 10 for Universal Windows Platform apps with Visual C++ 2017 (vc15).
 - \ref tutorial-install-osx-homebrew <br>In this tutorial you will learn how to install ViSP from source on OSX with Homebrew.
 
 
@@ -96,6 +104,17 @@ href="https://visp.inria.fr/publications" target="_parent">https://visp.inria.fr
 - \ref tutorial-image-filtering <br>This tutorial shows how to filter an image with ViSP.
 - \ref tutorial-simu-image <br>This tutorial shows how to project the image of a planar scene to a given camera position.
 
+\subsection tuto_imgproc Image processing
+
+- \ref tutorial-imgproc-brightness <br>This tutorial will show you some simple techniques to adjust or improve the brightness / contrast of an image.
+- \ref tutorial-imgproc-contrast-sharpening <br>This tutorial will show you some simple techniques to improve the contrast and the sharpness of an image.
+- \ref tutorial-imgproc-autothreshold <br>This tutorial will show you different methods to automatically threshold, binarize an image.
+- \ref tutorial-imgproc-contour <br>This tutorial will show you how to extract the contours from a binary image.
+- \ref tutorial-imgproc-connected-components <br>This tutorial will show you how to do a connected-components labeling.
+- \ref tutorial-imgproc-flood-fill <br>This tutorial will show you how to use the flood fill algorithm.
+- \ref tutorial-imgproc-count-coins <br>This tutorial will show you how to count the number of coins in an image.
+
+
 \subsection tuto_calib Camera calibration
 
 - \ref tutorial-calibration <br>This tutorial explains how to calibrate a camera.
@@ -107,6 +126,7 @@ href="https://visp.inria.fr/publications" target="_parent">https://visp.inria.fr
 - \ref tutorial-tracking-me <br>This tutorial focuses on line and ellipse tracking using moving-edges.
 - \ref tutorial-tracking-mb <br>This tutorial focuses on model-based trackers using either edges, keypoints or and hybrid scheme that uses edges and keypoints.
 - \ref tutorial-tracking-mb-stereo <br>This tutorial focuses on model-based trackers with stereo cameras.
+- \ref tutorial-tracking-mb-generic <br>This tutorial focuses on generic model-based trackers.
 - \ref tutorial-tracking-tt <br>This tutorial focuses on template trackers based on image registration approaches.
 
 \subsection tuto_detection Detection
@@ -422,8 +442,8 @@ scheme, ...</p>
   \ingroup module_mbt
   \defgroup group_mbt_trackers Trackers
   Model-based trackers. Two group of classes may be used:
-  - the one that allows to track an object on a single image: vpMbEdgeTracker, vpMbKltTracker, vpMbEdgeKltTracker;
-  - the one that allows to track an object seen in two (stereo) or more images: vpMbEdgeMultiTracker, vpMbKltMultiTracker, vpMbEdgeKltMultiTracker.
+  - the one that allows to track an object on a single image: vpMbGenericTracker (recommended), vpMbEdgeTracker, vpMbKltTracker, vpMbEdgeKltTracker;
+  - the one that allows to track an object seen in two (stereo) or more images: vpMbGenericTracker (recommended), vpMbEdgeMultiTracker, vpMbKltMultiTracker, vpMbEdgeKltMultiTracker.
 */
 /*!
   \ingroup module_mbt

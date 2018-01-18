@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -37,7 +38,6 @@
  *
  *****************************************************************************/
 
-
 #ifndef vpRzyzVector_h
 #define vpRzyzVector_h
 
@@ -52,8 +52,8 @@
 class vpRotationMatrix;
 class vpThetaUVector;
 
-#include <visp3/core/vpRotationVector.h>
 #include <visp3/core/vpRotationMatrix.h>
+#include <visp3/core/vpRotationVector.h>
 
 /*!
   \class vpRzyzVector
@@ -68,7 +68,8 @@ class vpThetaUVector;
   \f$(\varphi,\theta,\psi)\f$ are respectively the rotation angles
   around the \f$z\f$, \f$y\f$ and \f$z\f$ axis.
 
-  \f[R_{zyz}(\varphi,\theta,\psi) = R_z(\varphi) \; R_y(\theta) \; R_z(\psi)\f]
+  \f[R_{zyz}(\varphi,\theta,\psi) = R_z(\varphi) \; R_y(\theta) \;
+R_z(\psi)\f]
 
   with
 
@@ -101,8 +102,10 @@ class vpThetaUVector;
   \f[
   R_{zyz}(\varphi,\theta,\psi) = \left(
   \begin{array}{ccc}
-  \cos\varphi \cos\theta \cos\psi - \sin\varphi\sin\psi & -\cos\varphi \cos\theta \sin\psi -\sin\varphi\cos\psi & \cos\varphi \sin\theta \\
-  \sin\varphi \cos\theta \cos\psi + \cos\varphi\sin\psi & -\sin\varphi \cos\theta \sin\psi +\cos\varphi\cos\psi & \sin\varphi \sin\theta \\
+  \cos\varphi \cos\theta \cos\psi - \sin\varphi\sin\psi & -\cos\varphi
+\cos\theta \sin\psi -\sin\varphi\cos\psi & \cos\varphi \sin\theta \\
+  \sin\varphi \cos\theta \cos\psi + \cos\varphi\sin\psi & -\sin\varphi
+\cos\theta \sin\psi +\cos\varphi\cos\psi & \sin\varphi \sin\theta \\
   -\sin\theta \cos\psi & \sin\theta \sin\psi & \cos\theta
   \end{array}
   \right)
@@ -150,31 +153,31 @@ int main()
 */
 class VISP_EXPORT vpRzyzVector : public vpRotationVector
 {
- public:
+public:
   vpRzyzVector();
   vpRzyzVector(const vpRzyzVector &rzyz);
 
   // initialize a Rzyz vector from a rotation matrix
-  explicit vpRzyzVector(const vpRotationMatrix& R);
+  explicit vpRzyzVector(const vpRotationMatrix &R);
 
   // initialize a Rzyz vector from a ThetaU vector
-  explicit vpRzyzVector(const vpThetaUVector&  tu);
+  explicit vpRzyzVector(const vpThetaUVector &tu);
 
   vpRzyzVector(const double phi, const double theta, const double psi);
   explicit vpRzyzVector(const vpColVector &rzyz);
 
   //! Destructor.
-  virtual ~vpRzyzVector() {};
+  virtual ~vpRzyzVector(){};
 
   // convert a rotation matrix into Rzyz vector
-  vpRzyzVector buildFrom(const vpRotationMatrix& R) ;
+  vpRzyzVector buildFrom(const vpRotationMatrix &R);
 
   // convert a ThetaU vector into a Rzyz vector
-  vpRzyzVector buildFrom(const vpThetaUVector& R) ;
+  vpRzyzVector buildFrom(const vpThetaUVector &R);
 
   void buildFrom(const double phi, const double theta, const double psi);
 
   vpRzyzVector &operator=(const vpColVector &rzyz);
   vpRzyzVector &operator=(double x);
-} ;
+};
 #endif

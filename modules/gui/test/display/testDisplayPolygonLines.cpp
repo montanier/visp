@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -41,14 +42,15 @@
 #include <cstdlib>
 
 #include <visp3/core/vpImage.h>
+#include <visp3/core/vpImageConvert.h>
 #include <visp3/core/vpPolygon.h>
-#include <visp3/gui/vpDisplayX.h>
-#include <visp3/gui/vpDisplayGTK.h>
-#include <visp3/gui/vpDisplayGDI.h>
-#include <visp3/gui/vpDisplayD3D.h>
-#include <visp3/gui/vpDisplayOpenCV.h>
-#include <visp3/io/vpParseArgv.h>
 #include <visp3/core/vpRect.h>
+#include <visp3/gui/vpDisplayD3D.h>
+#include <visp3/gui/vpDisplayGDI.h>
+#include <visp3/gui/vpDisplayGTK.h>
+#include <visp3/gui/vpDisplayOpenCV.h>
+#include <visp3/gui/vpDisplayX.h>
+#include <visp3/io/vpParseArgv.h>
 
 // List of allowed command line options
 #define GETOPTARGS "cdh"
@@ -85,7 +87,7 @@ OPTIONS:                                               Default\n\
      Print the help.\n\n");
 
   if (badparam) {
-    fprintf(stderr, "ERROR: \n" );
+    fprintf(stderr, "ERROR: \n");
     fprintf(stderr, "\nBad parameter [%s]\n", badparam);
   }
 }
@@ -111,12 +113,21 @@ bool getOptions(int argc, const char **argv, bool &click_allowed, bool &display)
 
   while ((c = vpParseArgv::parse(argc, argv, GETOPTARGS, &optarg_)) > 1) {
     switch (c) {
-    case 'c': click_allowed = false; break;
-    case 'd': display = false; break;
-    case 'h': usage(argv[0], NULL); return false; break;
+    case 'c':
+      click_allowed = false;
+      break;
+    case 'd':
+      display = false;
+      break;
+    case 'h':
+      usage(argv[0], NULL);
+      return false;
+      break;
 
     default:
-      usage(argv[0], optarg_); return false; break;
+      usage(argv[0], optarg_);
+      return false;
+      break;
     }
   }
 
@@ -131,7 +142,7 @@ bool getOptions(int argc, const char **argv, bool &click_allowed, bool &display)
   return true;
 }
 
-int main(int argc, const char ** argv)
+int main(int argc, const char **argv)
 {
 #ifdef VISP_HAVE_DISPLAY
   bool opt_click_allowed = true;
@@ -179,9 +190,9 @@ int main(int argc, const char ** argv)
     vpDisplay::getClick(I);
 
     d2.init(I_color, I.getWidth(), 0, "Color image");
-    //Create colormap
+    // Create colormap
     for (unsigned int i = 0; i < I_color.getHeight(); i++) {
-      double hue = i / (double) I_color.getHeight(), saturation = 1.0, value = 1.0;
+      double hue = i / (double)I_color.getHeight(), saturation = 1.0, value = 1.0;
       unsigned char rgb[3];
       vpImageConvert::HSVToRGB(&hue, &saturation, &value, rgb, 1);
 
@@ -193,7 +204,8 @@ int main(int argc, const char ** argv)
     }
 
     vpDisplay::display(I_color);
-    vpDisplay::displayText(I_color, 20, 20, "Left click to draw a polygon, right click when it is finished.", vpColor::black);
+    vpDisplay::displayText(I_color, 20, 20, "Left click to draw a polygon, right click when it is finished.",
+                           vpColor::black);
     vpDisplay::flush(I_color);
 
     polygon.initClick(I_color);

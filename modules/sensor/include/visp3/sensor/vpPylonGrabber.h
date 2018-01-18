@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -44,13 +45,15 @@
 
 #ifdef VISP_HAVE_PYLON
 
-// Work arround: /usr/X11R6/include/X11/X.h:115:30: note: expanded from macro 'None'
+// Work arround: /usr/X11R6/include/X11/X.h:115:30: note: expanded from macro
+// 'None'
 #ifdef None
-#  undef None
+#undef None
 #endif
-// Work arround: /usr/X11R6/include/X11/Xlib.h:83:16: note: expanded from macro 'Status'
+// Work arround: /usr/X11R6/include/X11/Xlib.h:83:16: note: expanded from
+// macro 'Status'
 #ifdef Status
-#  undef Status
+#undef Status
 #endif
 
 #include <pylon/PylonIncludes.h>
@@ -73,8 +76,7 @@
   To get a vpPylonGrabber, use the following code.
   \code
   vpPylonFactory &factory = vpPylonFactory::instance();
-  vpPylonGrabber *g =
-  factory.createPylonGrabber(vpPylonFactory::BASLER_GIGE);
+  vpPylonGrabber *g = factory.createPylonGrabber(vpPylonFactory::BASLER_GIGE);
   \endcode
 
   To use this class install first Pylon SDK\n
@@ -317,8 +319,7 @@ public:
     https://www.ptgrey.com/kb/11020?countryid=237
     \sa getExposure()
    */
-  virtual float setExposure(bool exposure_on, bool exposure_auto,
-                            float exposure_value) = 0;
+  virtual float setExposure(bool exposure_on, bool exposure_auto, float exposure_value) = 0;
   /*!
     Set camera gain mode and value.
     \param gain_auto : If true set auto gain, if false set manual gain
@@ -364,8 +365,7 @@ public:
 
     \sa loadUserSet()
    */
-  virtual bool saveUserSet(UserSetName user_set,
-                           bool set_default = false) = 0;
+  virtual bool saveUserSet(UserSetName user_set, bool set_default = false) = 0;
   /*!
     \brief Sets the configuration set to be used as the default startup
     set.

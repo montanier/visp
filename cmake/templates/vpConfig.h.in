@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -270,8 +271,11 @@
 // Defined if libusb-1.0 library available.
 #cmakedefine VISP_HAVE_LIBUSB_1
 
-// Defined if RealSense library available.
+// Defined if librealSense library is available.
 #cmakedefine VISP_HAVE_REALSENSE
+
+// Defined if librealSense2 library is available.
+#cmakedefine VISP_HAVE_REALSENSE2
 
 // Defined if raw1394 and dc1394-2.x libraries available.
 #cmakedefine VISP_HAVE_DC1394
@@ -346,6 +350,9 @@
 // Defined if Inria's Viper850 data files (camera intrinsic/extrinsic parameters) are available
 #cmakedefine VISP_HAVE_VIPER850_DATA
 #define VISP_VIPER850_DATA_PATH "${VISP_VIPER850_DATA_PATH}"
+
+// Defined if Franka Emika robot available.
+#cmakedefine VISP_HAVE_FRANKA
 
 // Defined if the Aria library and (pthread, rt, dl libraries under Unix) is found.
 // These libraries are used to control Pioneer mobile robots.

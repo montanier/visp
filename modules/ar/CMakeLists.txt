@@ -3,9 +3,10 @@
 # This file is part of the ViSP software.
 # Copyright (C) 2005 - 2017 by Inria. All rights reserved.
 #
-# This software is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# ("GPL") version 2 as published by the Free Software Foundation.
+# This software is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 # See the file LICENSE.txt at the root directory of this source
 # distribution for additional information about the GNU GPL.
 #
@@ -95,7 +96,17 @@ if(USE_OGRE)
       list(APPEND opt_incs ${inc_})
     endif()
   endforeach()
-  list(APPEND opt_libs ${OGRE_LIBRARIES})
+  if(WIN32)
+    foreach(lib_ ${OGRE_LIBRARIES})
+      if(${lib_} MATCHES "^Ogre")
+        list(APPEND opt_libs "${OGRE_LIBRARY_DIRS}/${lib_}.lib")
+      else()
+        list(APPEND opt_libs ${lib_})
+      endif()
+    endforeach()
+  else()
+    list(APPEND opt_libs ${OGRE_LIBRARIES})
+  endif()
 endif(USE_OGRE)
 
 if(USE_OIS AND USE_OGRE)

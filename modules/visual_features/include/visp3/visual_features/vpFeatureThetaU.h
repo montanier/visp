@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -36,7 +37,6 @@
  *
  *****************************************************************************/
 
-
 #ifndef vpFeatureThetaU_H
 #define vpFeatureThetaU_H
 
@@ -51,7 +51,6 @@
 
 #include <visp3/core/vpHomogeneousMatrix.h>
 #include <visp3/core/vpRGBa.h>
-
 
 /*!
   \class vpFeatureThetaU
@@ -139,8 +138,8 @@
   while() loop while \f$s^*\f$ is considered as zero.
 
   \code
-#include <visp3/visual_features/vpFeatureThetaU.h>
 #include <visp3/core/vpHomogeneousMatrix.h>
+#include <visp3/visual_features/vpFeatureThetaU.h>
 #include <visp3/vs/vpServo.h>
 
 int main()
@@ -195,9 +194,9 @@ int main()
   vector \f$(s-s^*)\f$ and finally build the interaction matrix \f$L_s\f$.
 
   \code
-#include <visp3/visual_features/vpFeatureThetaU.h>
 #include <visp3/core/vpHomogeneousMatrix.h>
 #include <visp3/core/vpMatrix.h>
+#include <visp3/visual_features/vpFeatureThetaU.h>
 
 int main()
 {
@@ -225,26 +224,24 @@ int main()
 class VISP_EXPORT vpFeatureThetaU : public vpBasicFeature
 {
 public:
-  typedef enum
-    {
-      TUx = 1, /*!< Select the subset \f$ \theta u_x \f$ visual feature
-       from the \f$ \theta u\f$ angle/axis representation. */
-      TUy = 2, /*!< Select the subset \f$ \theta u_y \f$ visual feature
-       from the \f$ \theta u\f$ angle/axis representation. */
-      TUz = 4  /*!< Select the subset \f$ \theta u_z \f$ visual feature
-       from the \f$ \theta u\f$ angle/axis representation. */
-    } vpFeatureThetaUType;
-  typedef enum
-    {
-      cdRc, /*!< Selector used to manipulate the visual feature \f$ s
-        = \theta u_{^{c^*}R_c} \f$. This visual feature
-        represent the orientation of the current camera frame
-        relative to the desired camera frame. */
-      cRcd /*!< Selector used to manipulate the visual feature \f$ s = \theta
-       u_{^{c}R_{c^*}} \f$. This visual feature
-        represent the orientation of the desired camera frame
-        relative to the current camera frame. */
-    } vpFeatureThetaURotationRepresentationType;
+  typedef enum {
+    TUx = 1, /*!< Select the subset \f$ \theta u_x \f$ visual feature
+     from the \f$ \theta u\f$ angle/axis representation. */
+    TUy = 2, /*!< Select the subset \f$ \theta u_y \f$ visual feature
+     from the \f$ \theta u\f$ angle/axis representation. */
+    TUz = 4  /*!< Select the subset \f$ \theta u_z \f$ visual feature
+     from the \f$ \theta u\f$ angle/axis representation. */
+  } vpFeatureThetaUType;
+  typedef enum {
+    cdRc, /*!< Selector used to manipulate the visual feature \f$ s
+      = \theta u_{^{c^*}R_c} \f$. This visual feature
+      represent the orientation of the current camera frame
+      relative to the desired camera frame. */
+    cRcd  /*!< Selector used to manipulate the visual feature \f$ s = \theta
+      u_{^{c}R_{c^*}} \f$. This visual feature
+       represent the orientation of the desired camera frame
+       relative to the current camera frame. */
+  } vpFeatureThetaURotationRepresentationType;
   /*
     attributes and members directly related to the vpBasicFeature needs
     other functionalities are useful but not mandatory
@@ -252,39 +249,31 @@ public:
 
 public:
   // Basic constructor.
-  vpFeatureThetaU() ;
-  explicit vpFeatureThetaU(vpFeatureThetaURotationRepresentationType r) ;
-  vpFeatureThetaU(vpThetaUVector &tu,
-                  vpFeatureThetaURotationRepresentationType r) ;
-  vpFeatureThetaU(vpRotationMatrix &R,
-                  vpFeatureThetaURotationRepresentationType r) ;
-  vpFeatureThetaU(vpHomogeneousMatrix &M,
-                  vpFeatureThetaURotationRepresentationType r) ;
+  vpFeatureThetaU();
+  explicit vpFeatureThetaU(vpFeatureThetaURotationRepresentationType r);
+  vpFeatureThetaU(vpThetaUVector &tu, vpFeatureThetaURotationRepresentationType r);
+  vpFeatureThetaU(vpRotationMatrix &R, vpFeatureThetaURotationRepresentationType r);
+  vpFeatureThetaU(vpHomogeneousMatrix &M, vpFeatureThetaURotationRepresentationType r);
   //! Destructor. Does nothing.
   virtual ~vpFeatureThetaU() {}
 
-  void buildFrom(vpThetaUVector &tu) ;
+  void buildFrom(vpThetaUVector &tu);
   // build from a rotation matrix
-  void buildFrom(const vpRotationMatrix &R) ;
+  void buildFrom(const vpRotationMatrix &R);
   // build from an homogeneous  matrix
-  void buildFrom(const vpHomogeneousMatrix &M) ;
+  void buildFrom(const vpHomogeneousMatrix &M);
 
-  void display(const vpCameraParameters &cam,
-               const vpImage<unsigned char> &I,
-               const vpColor &color=vpColor::green,
-               unsigned int thickness=1) const ;
-  void display(const vpCameraParameters &cam,
-               const vpImage<vpRGBa> &I,
-               const vpColor &color=vpColor::green,
-               unsigned int thickness=1) const ;
+  void display(const vpCameraParameters &cam, const vpImage<unsigned char> &I, const vpColor &color = vpColor::green,
+               unsigned int thickness = 1) const;
+  void display(const vpCameraParameters &cam, const vpImage<vpRGBa> &I, const vpColor &color = vpColor::green,
+               unsigned int thickness = 1) const;
 
   //! Feature duplication.
-  vpFeatureThetaU *duplicate() const ;
+  vpFeatureThetaU *duplicate() const;
 
   // compute the error between two visual features from a subset
   // a the possible features
-  vpColVector error(const vpBasicFeature &s_star,
-                    const unsigned int select = FEATURE_ALL)  ;
+  vpColVector error(const vpBasicFeature &s_star, const unsigned int select = FEATURE_ALL);
 
   vpFeatureThetaURotationRepresentationType getFeatureThetaURotationType() const;
 
@@ -293,15 +282,15 @@ public:
   double get_TUz() const;
 
   // Basic construction.
-  void init() ;
+  void init();
   // compute the interaction matrix from a subset a the possible features
-  vpMatrix  interaction(const unsigned int select = FEATURE_ALL);
+  vpMatrix interaction(const unsigned int select = FEATURE_ALL);
 
-  void print(const unsigned int select= FEATURE_ALL) const ;
+  void print(const unsigned int select = FEATURE_ALL) const;
 
-  void set_TUx(const double tu_x) ;
-  void set_TUy(const double tu_y) ;
-  void set_TUz(const double tu_z) ;
+  void set_TUx(const double tu_x);
+  void set_TUy(const double tu_y);
+  void set_TUz(const double tu_z);
 
   void setFeatureThetaURotationType(const vpFeatureThetaURotationRepresentationType r);
 
@@ -315,7 +304,6 @@ public:
 
 private:
   vpFeatureThetaURotationRepresentationType rotation;
-} ;
-
+};
 
 #endif

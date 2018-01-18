@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -35,8 +36,6 @@
  *
  *****************************************************************************/
 
-
-
 #ifndef __QUATERNIONVECTOR_H__
 #define __QUATERNIONVECTOR_H__
 
@@ -52,7 +51,6 @@
 #include <visp3/core/vpRotationMatrix.h>
 #include <visp3/core/vpRotationVector.h>
 #include <visp3/core/vpThetaUVector.h>
-
 
 /*!
   \class vpQuaternionVector
@@ -82,21 +80,22 @@ class VISP_EXPORT vpQuaternionVector : public vpRotationVector
 {
 private:
   static const double minimum;
+
 public:
   vpQuaternionVector();
   vpQuaternionVector(const vpQuaternionVector &q);
-  vpQuaternionVector(const double qx, const double qy, const double qz,const double qw) ;
+  vpQuaternionVector(const double qx, const double qy, const double qz, const double qw);
   explicit vpQuaternionVector(const vpRotationMatrix &R);
-  explicit vpQuaternionVector(const vpThetaUVector& tu) ;
+  explicit vpQuaternionVector(const vpThetaUVector &tu);
   explicit vpQuaternionVector(const vpColVector &q);
 
   //! Destructor.
-  virtual ~vpQuaternionVector() {};
+  virtual ~vpQuaternionVector(){};
 
-  vpQuaternionVector buildFrom(const double qx, const double qy, const double qz, const double qw) ;
-  vpQuaternionVector buildFrom(const vpRotationMatrix& R);
-  vpQuaternionVector buildFrom(const vpThetaUVector& tu);
-  void set(const double x, const double y, const double z, const double w) ;
+  vpQuaternionVector buildFrom(const double qx, const double qy, const double qz, const double qw);
+  vpQuaternionVector buildFrom(const vpRotationMatrix &R);
+  vpQuaternionVector buildFrom(const vpThetaUVector &tu);
+  void set(const double x, const double y, const double z, const double w);
 
   double x() const;
   double y() const;
@@ -115,6 +114,6 @@ public:
   vpQuaternionVector inverse() const;
   double magnitude() const;
   void normalize();
-} ;
+};
 
 #endif

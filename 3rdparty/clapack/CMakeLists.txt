@@ -1,7 +1,9 @@
 project(${LAPACK_LIBRARY} C)
 
-if(CMAKE_COMPILER_IS_GNUCXX AND UNIX)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+if(UNIX)
+  if(CMAKE_COMPILER_IS_GNUCXX OR CV_ICC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+  endif()
 endif()
 
 set(LAPACK_MAJOR_VERSION 3 PARENT_SCOPE)
@@ -37,9 +39,9 @@ endif()
 if(MSVC)
   # Disable Visual C++ warnings
   foreach(f ${lib_srcs})
-    vp_set_source_file_compile_flag(${f} /wd4244 /wd4267 /wd4273 /wd4554 /wd4996)
+    vp_set_source_file_compile_flag(${f} /wd"4244" /wd"4267" /wd"4273" /wd"4554" /wd"4996")
   endforeach()
-  vp_set_source_file_compile_flag(f2c/pow_ii.c /wd4723)
+  vp_set_source_file_compile_flag(f2c/pow_ii.c /wd"4723")
 else()
   foreach(f ${lib_srcs})
     vp_set_source_file_compile_flag(${f} -Wno-logical-op-parentheses -Wno-shift-op-parentheses -Wno-parentheses -Wno-format-extra-args -Wno-format)

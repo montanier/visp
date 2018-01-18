@@ -3,9 +3,10 @@
 # This file is part of the ViSP software.
 # Copyright (C) 2005 - 2017 by Inria. All rights reserved.
 #
-# This software is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# ("GPL") version 2 as published by the Free Software Foundation.
+# This software is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 # See the file LICENSE.txt at the root directory of this source
 # distribution for additional information about the GNU GPL.
 #
@@ -227,20 +228,24 @@ set(VISP_CONTRIB_MODULES_PATH "" CACHE PATH "Where to look for additional contri
 # Get the OS
 set(OS ${CMAKE_SYSTEM_NAME})
 
-set(OGRE_HOME $ENV{OGRE_HOME})
-if(OGRE_HOME)
+set(OGRE_DIR $ENV{OGRE_DIR})
+if(NOT OGRE_DIR) # For compat with previous ViSP versions
+  set(OGRE_DIR $ENV{OGRE_HOME})
+endif()
+if(OGRE_DIR)
   # replace \ with / especially for windows
-  STRING(REGEX REPLACE "\\\\" "/" OGRE_HOME ${OGRE_HOME})
+  STRING(REGEX REPLACE "\\\\" "/" OGRE_DIR ${OGRE_DIR})
 endif()
 
 # add the path to detect Ogre3D
 if(WIN32)
-  list(APPEND CMAKE_MODULE_PATH "${OGRE_HOME}/CMake")
+  list(APPEND CMAKE_MODULE_PATH "${OGRE_DIR}/cmake")
+  list(APPEND CMAKE_MODULE_PATH "${OGRE_DIR}/CMake")
 endif(WIN32)
 
 if(UNIX)
-  list(APPEND CMAKE_MODULE_PATH "${OGRE_HOME}/cmake")
-  list(APPEND CMAKE_MODULE_PATH "${OGRE_HOME}/CMake")
+  list(APPEND CMAKE_MODULE_PATH "${OGRE_DIR}/cmake")
+  list(APPEND CMAKE_MODULE_PATH "${OGRE_DIR}/CMake")
   list(APPEND CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake")
   list(APPEND CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake")
   list(APPEND CMAKE_MODULE_PATH "/usr/local/lib64/OGRE/cmake")
@@ -262,8 +267,13 @@ VP_OPTION(BUILD_COVERAGE "" "" "Enables test coverage" "" OFF IF (BUILD_TESTS AN
 
 # Build demos as an option.
 VP_OPTION(BUILD_DEMOS  "" "" "Build ViSP demos" "" ON)
-# Build demos as an option.
+# Build tutorials as an option.
 VP_OPTION(BUILD_TUTORIALS  "" "" "Build ViSP tutorials" "" ON)
+# Build apps as an option.
+vp_check_subdirectories(VISP_CONTRIB_MODULES_PATH apps APPS_FOUND)
+if(APPS_FOUND)
+  VP_OPTION(BUILD_APPS  "" "" "Build ViSP apps" "" ON)
+endif()
 # Build deprecated functions as an option.
 VP_OPTION(BUILD_DEPRECATED_FUNCTIONS  "" "" "Build deprecated functionalities" "" ON)
 # Debug and trace cflags
@@ -339,45 +349,54 @@ find_host_program(XRANDR xrandr)
 
 VP_CHECK_PACKAGE(C99)
 
-VP_OPTION(USE_AFMA4    "" "" "Include Afma4 robot support"      "" ON IF (RAW1394_FOUND AND RT_FOUND AND CALINUX_FOUND AND IRISA_FOUND AND NOT WINRT))
-VP_OPTION(USE_AFMA6    "" "" "Include Afma6 robot support"      "" ON IF (RAW1394_FOUND AND RT_FOUND AND CALINUX_FOUND AND IRISA_FOUND AND NOT WINRT))
-VP_OPTION(USE_VIPER650 "" "" "Include Viper s650 robot support" "" ON IF (RAW1394_FOUND AND RT_FOUND AND CALINUX_FOUND AND IRISA_FOUND AND NOT WINRT))
-VP_OPTION(USE_VIPER850 "" "" "Include Viper s850 robot support" "" ON IF (RAW1394_FOUND AND RT_FOUND AND CALINUX_FOUND AND IRISA_FOUND AND NOT WINRT))
-VP_OPTION(USE_VIRTUOSE    Virtuose    "" "Include Virtuose SDK support for Haption devices" "" ON IF NOT WINRT)
-VP_OPTION(USE_DC1394      DC1394      "" "Include dc1394 support"          "" ON IF UNIX AND NOT WINRT)
-VP_OPTION(USE_V4L2        V4L2        "" "Include v4l2 support"            "" ON IF UNIX AND NOT WINRT)
-VP_OPTION(USE_FLYCAPTURE  FlyCapture  "" "Include FlyCapture SDK support for PointGrey cameras" "" ON IF NOT WINRT)
-VP_OPTION(USE_PYLON  Pylon  "" "Include Pylon SDK support for Basler cameras" "" ON IF NOT WINRT)
-VP_OPTION(USE_COMEDI      Comedi      "" "Include comedi (linux control and measurement device interface) support" "" ON IF NOT WINRT)
-VP_OPTION(USE_BICLOPS     BICLOPS     "" "Include biclops support"         "" ON IF NOT WINRT)
-VP_OPTION(USE_PTU46       PTU46       "" "Include ptu-46 support"          "" ON IF UNIX AND NOT WINRT)
-VP_OPTION(USE_CMU1394     CMU1394     "" "Include cmu1494 support"         "" ON IF WIN32 AND NOT WINRT)
-VP_OPTION(USE_GDI         GDI         "" "Include gdi support"             "" ON IF WIN32 AND NOT WINRT)
-VP_OPTION(USE_DIRECT3D    DIRECT3D    "" "Include d3d support"             "" ON IF WIN32 AND NOT WINRT)
-VP_OPTION(USE_DIRECTSHOW  DIRECTSHOW  "" "Include dshow support"           "" ON IF WIN32 AND NOT WINRT)
-VP_OPTION(USE_OPENMP      OpenMP      "" "Include openmp support"          "" ON)
-VP_OPTION(USE_EIGEN3      Eigen3      QUIET "Include eigen3 support"       "" ON IF NOT WINRT)
+VP_OPTION(USE_AFMA4       ""          ""    "Include Afma4 robot support"      "" ON IF (RAW1394_FOUND AND RT_FOUND AND CALINUX_FOUND AND IRISA_FOUND AND NOT WINRT))
+VP_OPTION(USE_AFMA6       ""          ""    "Include Afma6 robot support"      "" ON IF (RAW1394_FOUND AND RT_FOUND AND CALINUX_FOUND AND IRISA_FOUND AND NOT WINRT))
+VP_OPTION(USE_VIPER650    ""          ""    "Include Viper s650 robot support" "" ON IF (RAW1394_FOUND AND RT_FOUND AND CALINUX_FOUND AND IRISA_FOUND AND NOT WINRT))
+VP_OPTION(USE_VIPER850    ""          ""    "Include Viper s850 robot support" "" ON IF (RAW1394_FOUND AND RT_FOUND AND CALINUX_FOUND AND IRISA_FOUND AND NOT WINRT))
+VP_OPTION(USE_VIRTUOSE    Virtuose    ""    "Include Virtuose SDK support for Haption devices" "" ON IF NOT WINRT)
+VP_OPTION(USE_FRANKA      Franka      QUIET "Include libfranka SDK support for Franka Emika robots" "" ON IF NOT WINRT)
+VP_OPTION(USE_DC1394      DC1394      ""    "Include dc1394 support"           "" ON IF UNIX AND NOT WINRT)
+VP_OPTION(USE_V4L2        V4L2        ""    "Include v4l2 support"             "" ON IF UNIX AND NOT WINRT)
+VP_OPTION(USE_FLYCAPTURE  FlyCapture  ""    "Include FlyCapture SDK support for PointGrey cameras" "" ON IF NOT WINRT)
+VP_OPTION(USE_PYLON       Pylon       ""    "Include Pylon SDK support for Basler cameras" "" ON IF NOT WINRT)
+VP_OPTION(USE_COMEDI      Comedi      ""    "Include comedi (linux control and measurement device interface) support" "" ON IF NOT WINRT)
+VP_OPTION(USE_BICLOPS     BICLOPS     ""    "Include biclops support"          "" ON IF NOT WINRT)
+VP_OPTION(USE_PTU46       PTU46       ""    "Include ptu-46 support"           "" ON IF UNIX AND NOT WINRT)
+VP_OPTION(USE_CMU1394     CMU1394     ""    "Include cmu1494 support"          "" ON IF WIN32 AND NOT WINRT)
+VP_OPTION(USE_GDI         GDI         ""    "Include gdi support"              "" ON IF WIN32 AND NOT WINRT)
+#VP_OPTION(USE_DIRECT3D    DIRECT3D    ""    "Include d3d support"             "" ON IF WIN32 AND NOT WINRT)
+VP_OPTION(USE_DIRECTSHOW  DIRECTSHOW  ""    "Include dshow support"            "" ON IF WIN32 AND NOT WINRT)
+VP_OPTION(USE_OPENMP      OpenMP      ""    "Include openmp support"           "" ON)
+VP_OPTION(USE_EIGEN3      Eigen3      QUIET "Include eigen3 support"           "" ON IF NOT WINRT)
 # Since the FindLAPACK.cmake provided with CMake is for Fortran language,
 # in CMakeModules we have added FindLAPACK_C.cmake for C language
-VP_OPTION(USE_LAPACK      LAPACK_C    "" "Include lapack support"          "" ON IF NOT WINRT)
-VP_OPTION(USE_GSL         GSL         "" "Include gsl support"             "" ON IF NOT WINRT)
-VP_OPTION(USE_COIN3D      "Coin3D;MyCoin3D" "" "Include coin3d support"    "" ON IF OPENGL_FOUND AND NOT WINRT)
-VP_OPTION(USE_YARP        YARP        QUIET "Include yarp support"         "YARP_DIR" ON IF NOT WINRT)
-VP_OPTION(USE_OGRE        OGRE        QUIET "Include Ogre support"         "OGRE_DIR" ON IF NOT WINRT)
-VP_OPTION(USE_OIS         OIS         QUIET "Include Ogre/ois support"     "OIS_DIR"  ON IF USE_OGRE AND NOT WINRT)
-VP_OPTION(USE_LIBFREENECT LIBFREENECT ""    "Include libfreenect support"  "" ON IF NOT WINRT)
-VP_OPTION(USE_LIBUSB_1    LIBUSB_1    ""    "Include libusb-1 support"     "" ON IF NOT WINRT)
-VP_OPTION(USE_REALSENSE   RealSense   ""    "Include RealSense SDK support" "" ON IF NOT WINRT)
-if(USE_REALSENSE)
-  VP_OPTION(USE_CPP11       CPP11     ""    "Include c++11 support"         "" ON)
+VP_OPTION(USE_LAPACK      LAPACK_C    ""    "Include lapack support"           "" ON IF NOT WINRT)
+VP_OPTION(USE_GSL         GSL         ""    "Include gsl support"              "" ON IF NOT WINRT)
+VP_OPTION(USE_COIN3D      "Coin3D;MyCoin3D" "" "Include coin3d support"        "" ON IF OPENGL_FOUND AND NOT WINRT)
+VP_OPTION(USE_YARP        YARP        QUIET "Include yarp support"             "YARP_DIR" ON IF NOT WINRT)
+VP_OPTION(USE_OGRE        OGRE        QUIET "Include Ogre support"             "OGRE_DIR" ON IF NOT WINRT)
+VP_OPTION(USE_OIS         OIS         QUIET "Include Ogre/ois support"         "OIS_DIR"  ON IF USE_OGRE AND NOT WINRT)
+VP_OPTION(USE_LIBFREENECT LIBFREENECT ""    "Include libfreenect support"      "" ON IF NOT WINRT)
+VP_OPTION(USE_LIBUSB_1    LIBUSB_1    ""    "Include libusb-1 support"         "" ON IF NOT WINRT)
+VP_OPTION(USE_REALSENSE   RealSense   ""    "Include RealSense SDK support"    "" ON IF NOT WINRT)
+VP_OPTION(USE_REALSENSE2  RealSense2  ""    "Include RealSense2 SDK support"   "" ON IF NOT WINRT)
+if(USE_REALSENSE OR USE_REALSENSE2)
+  VP_OPTION(USE_CPP11       CPP11     ""    "Include c++11 support"            "" ON)
   # if option is OFF, force to ON
   if(NOT USE_CPP11 AND CPP11_FOUND)
+    if(USE_REALSENSE)
+      message(WARNING "Realsense 3rd party was detected but turned OFF since USE_CPP11 is OFF. Realsense 3rd party needs cxx11 compiler flags. Thus to enable Realsense usage you have to turn USE_REALSENSE=ON and USE_CPP11=ON.")
+    endif()
     unset(USE_REALSENSE)
     set(USE_REALSENSE OFF CACHE BOOL "Include RealSense SDK support" FORCE)
-    message(WARNING "Realsense 3rd party was detected but turned OFF since USE_CPP11 is OFF. Realsense 3rd party needs cxx11 compiler flags. Thus to enable Realsense usage you have to turn USE_REALSENSE=ON and USE_CPP11=ON.")
+    if(USE_REALSENSE2)
+      message(WARNING "Realsense2 3rd party was detected but turned OFF since USE_CPP11 is OFF. Realsense2 3rd party needs cxx11 compiler flags. Thus to enable Realsense2 usage you have to turn USE_REALSENSE2=ON and USE_CPP11=ON.")
+    endif()
+    unset(USE_REALSENSE2)
+    set(USE_REALSENSE2 OFF CACHE BOOL "Include RealSense2 SDK support" FORCE)
   endif()
 else()
-  VP_OPTION(USE_CPP11       CPP11     ""    "Include c++11 support"        "" OFF)
+  VP_OPTION(USE_CPP11     CPP11       ""    "Include c++11 support"        "" OFF)
 endif()
 VP_OPTION(USE_SOWIN       SOWIN       ""    "Include Coin/SoWin support"   "" OFF IF (WIN32 AND USE_COIN3D) AND NOT WINRT)
 VP_OPTION(USE_SOQT        SOQT        ""    "Include Coin/SoQt support"    "" OFF IF USE_COIN3D AND NOT WINRT)
@@ -404,9 +423,10 @@ VP_OPTION(USE_ARIA        ARIA         ""    "Include aria support"         "" O
 # bar codes
 VP_OPTION(USE_ZBAR        ZBAR         ""    "Include zbar support"         "" ON IF NOT WINRT)
 VP_OPTION(USE_DMTX        DMTX         ""    "Include dmtx support"         "" ON IF NOT WINRT)
-VP_OPTION(USE_PCL         PCL          QUIET "Include Point Cloud Library support" "" ON IF USE_REALSENSE AND NOT WINRT AND NOT IOS)
-VP_OPTION(WITH_PTHREAD    ""           ""    "Build pthread as built-in library"   "" ON IF (NOT USE_PTHREAD) AND (WIN32 OR MINGW))
-VP_OPTION(WITH_APRILTAG   ""           ""    "Build AprilTag as built-in library"  "" ON IF (USE_PTHREAD OR WITH_PTHREAD) AND (UNIX OR (WIN32 AND MINGW)) OR (WIN32 AND MSVC))
+VP_OPTION(USE_PCL         PCL          QUIET "Include Point Cloud Library support" "" ON IF (USE_REALSENSE OR USE_REALSENSE2) AND NOT WINRT AND NOT IOS)
+VP_OPTION(WITH_PTHREAD    ""           ""    "Build pthread as built-in library"   "" ON IF (NOT USE_PTHREAD) AND (WIN32 OR MINGW) AND (NOT WINRT_8_1) AND (NOT WINRT_8_0))
+# Since C99 is not supported by MSVC 2010 or prior, we disable apriltag if MSVC < 2012
+VP_OPTION(WITH_APRILTAG   ""           ""    "Build AprilTag as built-in library"  "" ON IF (USE_PTHREAD OR WITH_PTHREAD) AND (NOT WINRT_8_1) AND (NOT WINRT_8_0) AND (NOT MSVC_VERSION LESS 1700))
 VP_OPTION(WITH_ATIDAQ     ""           ""    "Build atidaq-c as built-in library"  "" ON IF USE_COMEDI AND NOT WINRT)
 VP_OPTION(WITH_CLIPPER    ""           ""    "Build clipper as built-in library"   "" ON IF USE_OPENCV)
 VP_OPTION(WITH_LAPACK     ""           ""    "Build lapack as built-in library"    "" ON IF NOT USE_LAPACK)
@@ -471,6 +491,14 @@ if(DOXYGEN_FOUND)
         set(DOXYGEN_IMAGE_PATH "${DOXYGEN_IMAGE_PATH} \\ \n\t\t\t \"${image_path_}\"")
       endif()
     endforeach()
+  endif()
+  # - DOXYGEN_CITE_BIB_FILES corresponding to CITE_BIB_FILES in the doxy file
+  set(DOXYGEN_CITE_BIB_FILES "\"${VISP_SOURCE_DIR}/doc/biblio/references.bib\"")
+  if(VISP_CONTRIB_MODULES_PATH)
+    set(cite_bib_file_ "${VISP_CONTRIB_MODULES_PATH}/doc/biblio/references.bib")
+    if(EXISTS ${cite_bib_file_})
+      set(DOXYGEN_CITE_BIB_FILES "${DOXYGEN_CITE_BIB_FILES} \\ \n\t\t\t \"${cite_bib_file_}\"")
+    endif()
   endif()
   # - DOXYGEN_SHOULD_SKIP_THIS var
   if (ENABLE_FULL_DOC)
@@ -638,6 +666,12 @@ VP_SET(VISP_HAVE_AFMA4       TRUE IF (BUILD_MODULE_visp_robot AND USE_AFMA4))
 VP_SET(VISP_HAVE_AFMA6       TRUE IF (BUILD_MODULE_visp_robot AND USE_AFMA6))
 VP_SET(VISP_HAVE_VIPER650    TRUE IF (BUILD_MODULE_visp_robot AND USE_VIPER650))
 VP_SET(VISP_HAVE_VIPER850    TRUE IF (BUILD_MODULE_visp_robot AND USE_VIPER850))
+VP_SET(VISP_HAVE_FRANKA      TRUE IF (BUILD_MODULE_visp_robot AND USE_FRANKA))
+if(VISP_HAVE_FRANKA)
+  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
+
 VP_SET(VISP_HAVE_BICLOPS     TRUE IF (BUILD_MODULE_visp_robot AND USE_BICLOPS))
 VP_SET(VISP_HAVE_PTU46       TRUE IF (BUILD_MODULE_visp_robot AND USE_PTU46))
 #VP_SET(VISP_HAVE_PIONEER     TRUE IF (BUILD_MODULE_visp_robot AND USE_ARIA))
@@ -665,6 +699,7 @@ VP_SET(VISP_HAVE_DIRECTSHOW  TRUE IF (BUILD_MODULE_visp_sensor AND USE_DIRECTSHO
 VP_SET(VISP_HAVE_LIBFREENECT TRUE IF (BUILD_MODULE_visp_sensor AND USE_LIBFREENECT))
 VP_SET(VISP_HAVE_LIBUSB_1    TRUE IF (BUILD_MODULE_visp_sensor AND USE_LIBUSB_1))
 VP_SET(VISP_HAVE_REALSENSE   TRUE IF (BUILD_MODULE_visp_sensor AND USE_REALSENSE))
+VP_SET(VISP_HAVE_REALSENSE2  TRUE IF (BUILD_MODULE_visp_sensor AND USE_REALSENSE2))
 VP_SET(VISP_HAVE_FLYCAPTURE  TRUE IF (BUILD_MODULE_visp_sensor AND USE_FLYCAPTURE))
 VP_SET(VISP_HAVE_PYLON  TRUE IF (BUILD_MODULE_visp_sensor AND USE_PYLON))
 VP_SET(VISP_HAVE_COMEDI      TRUE IF (BUILD_MODULE_visp_sensor AND USE_COMEDI))
@@ -768,7 +803,9 @@ VP_SET(VISP_HAVE_FUNC_LOG1P TRUE IF HAVE_FUNC_LOG1P) # for header vpConfig.h
 VP_SET(VISP_BUILD_DEPRECATED_FUNCTIONS TRUE IF BUILD_DEPRECATED_FUNCTIONS) # for header vpConfig.h
 VP_SET(VISP_MOMENTS_COMBINE_MATRICES TRUE IF ENABLE_MOMENTS_COMBINE_MATRICES) # for header vpConfig.h
 VP_SET(VISP_USE_MSVC TRUE IF MSVC) # for header vpConfig.h
-VP_SET(VISP_HAVE_CPP11_COMPATIBILITY TRUE IF USE_CPP11) # for header vpConfig.h
+# Hack for msvc12 (Visual 2013) where C++11 implementation is incomplete
+VP_SET(VISP_HAVE_CPP11_COMPATIBILITY TRUE IF USE_CPP11 OR (MSVC_VERSION EQUAL 1800)) # for header vpConfig.h
+
 VP_SET(VISP_HAVE_BICLOPS_AND_GET_HOMED_STATE_FUNCTION TRUE IF (USE_BICLOPS AND BICLOPS_HAVE_GET_HOMED_STATE_FUNCTION)) # for header vpConfig.h
 
 # libraries for Pioneer mobile robots
@@ -856,6 +893,9 @@ endif()
 if(BUILD_TUTORIALS)
   add_subdirectory(tutorial)
   vp_add_subdirectories(VISP_CONTRIB_MODULES_PATH tutorial)
+endif()
+if(BUILD_APPS)
+  vp_add_subdirectories(VISP_CONTRIB_MODULES_PATH apps)
 endif()
 
 # ----------------------------------------------------------------------------
@@ -1092,6 +1132,7 @@ status("")
 status("  Real robots: ")
 status("    Use Afma4:"              USE_AFMA4        THEN "yes" ELSE "no")
 status("    Use Afma6:"              USE_AFMA6        THEN "yes" ELSE "no")
+status("    Use Franka:"             USE_FRANKA       THEN "yes" ELSE "no")
 status("    Use Viper650:"           USE_VIPER850     THEN "yes" ELSE "no")
 status("    Use Viper850:"           USE_VIPER850     THEN "yes" ELSE "no")
 status("    Use aria (Pioneer):"     USE_ARIA         THEN "yes" ELSE "no")
@@ -1116,6 +1157,7 @@ status("    Use Pylon:"         USE_PYLON   THEN "yes (ver ${PYLON_VERSION})" EL
 status("")
 status("  RGB-D sensors: ")
 status("    Use Realsense:"          USE_REALSENSE    THEN "yes (ver ${REALSENSE_VERSION})" ELSE "no")
+status("    Use Realsense2:"         USE_REALSENSE2   THEN "yes (ver ${REALSENSE2_VERSION})" ELSE "no")
 status("    \\- Use PCL:"            USE_PCL          THEN "yes (ver ${PCL_VERSION})" ELSE "no")
 status("       \\- Use VTK:"         VTK_FOUND        THEN "yes (ver ${VTK_VERSION})" ELSE "no")
 status("    Use Kinect:"             USE_LIBFREENECT AND USE_LIBUSB_1 AND USE_PTHREAD THEN "yes" ELSE "no")
@@ -1154,6 +1196,9 @@ status("    Tests:"                  BUILD_TESTS      THEN "yes" ELSE "no")
 status("    Demos:"                  BUILD_DEMOS      THEN "yes" ELSE "no")
 status("    Examples:"               BUILD_EXAMPLES   THEN "yes" ELSE "no")
 status("    Tutorials:"              BUILD_TUTORIALS  THEN "yes" ELSE "no")
+if(APPS_FOUND)
+  status("    Apps:"              BUILD_APPS  THEN "yes" ELSE "no")
+endif()
 
 # ========================== auxiliary ==========================
 status("")

@@ -3,9 +3,10 @@
 # This file is part of the ViSP software.
 # Copyright (C) 2005 - 2017 by Inria. All rights reserved.
 #
-# This software is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# ("GPL") version 2 as published by the Free Software Foundation.
+# This software is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 # See the file LICENSE.txt at the root directory of this source
 # distribution for additional information about the GNU GPL.
 #
@@ -213,6 +214,9 @@ if(USE_OGRE)
   vp_set_source_file_compile_flag(src/depth/vpMbDepthNormalTracker.cpp -Wno-unused-parameter -Wno-unused-but-set-parameter -Wno-overloaded-virtual)
   vp_set_source_file_compile_flag(src/vpMbtXmlGenericParser.cpp -Wno-unused-parameter -Wno-unused-but-set-parameter -Wno-overloaded-virtual)
   vp_set_source_file_compile_flag(src/vpMbGenericTracker.cpp -Wno-unused-parameter -Wno-unused-but-set-parameter -Wno-overloaded-virtual)
+endif()
+if(MSVC)
+  vp_set_source_file_compile_flag(src/depth/vpMbtTukeyEstimator.cpp /wd"4244")
 endif()
 
 vp_module_include_directories(${opt_incs})

@@ -13,6 +13,7 @@ set(tutorial_cpp
   tutorial-grabber-flycapture.cpp
   tutorial-grabber-opencv.cpp
   tutorial-grabber-opencv-threaded.cpp
+  tutorial-grabber-realsense.cpp
   tutorial-grabber-v4l2.cpp
   tutorial-grabber-v4l2-threaded.cpp
   tutorial-video-reader.cpp
@@ -27,6 +28,10 @@ if(VISP_HAVE_FLYCAPTURE)
 endif()
 if(VISP_HAVE_PYLON)
   visp_set_source_file_compile_flag(tutorial-grabber-basler-pylon.cpp -Wno-unknown-pragmas -Wno-overloaded-virtual -Wno-unused-parameter)
+endif()
+if(VISP_HAVE_REALSENSE)
+  # Add specific build flag to turn off warnings coming from PointGrey flycapture 3rd party
+  visp_set_source_file_compile_flag(tutorial-grabber-realsense.cpp -Wno-pessimizing-move -Wno-unused-parameter)
 endif()
 
 foreach(cpp ${tutorial_cpp})

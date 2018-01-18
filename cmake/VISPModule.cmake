@@ -3,9 +3,10 @@
 # This file is part of the ViSP software.
 # Copyright (C) 2005 - 2017 by Inria. All rights reserved.
 #
-# This software is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# ("GPL") version 2 as published by the Free Software Foundation.
+# This software is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 # See the file LICENSE.txt at the root directory of this source
 # distribution for additional information about the GNU GPL.
 #
@@ -249,6 +250,7 @@ macro(vp_glob_modules)
         vp_list_remove_item(__vpmodules "tutorial")
         vp_list_remove_item(__vpmodules "example")
         vp_list_remove_item(__vpmodules "demo")
+        vp_list_remove_item(__vpmodules "apps")
         vp_list_remove_item(__vpmodules "doc")
         vp_list_remove_item(__vpmodules ".gitignore")
         vp_list_remove_item(__vpmodules ".travis.yml")
@@ -682,7 +684,7 @@ macro(vp_create_compat_headers)
   foreach(h ${ARGN})
     get_filename_component(__h_name_we ${h} NAME_WE)
     get_filename_component(__h_name ${h} NAME)
-    set(VISP_HEADER_CONTENT_CONFIGMAKE "#ifndef __${__h_name_we}_h_\n#define __${__h_name_we}_h_\n\n#include <visp3/${name}/${__h_name}>\n\n#endif\n")
+    set(VISP_HEADER_CONTENT_CONFIGMAKE "#ifndef __${__h_name_we}_gen_h_\n#define __${__h_name_we}_gen_h_\n\n#include <visp3/${name}/${__h_name}>\n\n#endif\n")
     set(__compat_header_dst "${VISP_INCLUDE_DIR}/visp/${__h_name_we}.h")
     configure_file("${VISP_SOURCE_DIR}/cmake/templates/vpHeader.h.in" ${__compat_header_dst})
   endforeach()
@@ -1070,4 +1072,12 @@ macro(vp_add_cmake_module_path)
       list(APPEND CMAKE_MODULE_PATH "${VISP_MODULE_${the_module}_LOCATION}/${d}")
     endif()
   endforeach()
+endmacro()
+
+macro(vp_cmake_configure file_name)
+  set(__shortname ${the_module})
+  vp_short_module_name(__shortname)
+  if(EXISTS ${VISP_MODULE_${the_module}_LOCATION}/${file_name})
+    configure_file(${VISP_MODULE_${the_module}_LOCATION}/${file_name} "${CMAKE_BINARY_DIR}/CMakeConfig-${__shortname}.cmake" @ONLY)
+  endif()
 endmacro()

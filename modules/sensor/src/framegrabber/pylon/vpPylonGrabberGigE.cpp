@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -51,8 +52,7 @@
    Default constructor that consider the first camera found on the bus as
    active.
  */
-vpPylonGrabberGigE::vpPylonGrabberGigE()
-  : m_camera(), m_index(0), m_numCameras(0), m_connected(false)
+vpPylonGrabberGigE::vpPylonGrabberGigE() : m_camera(), m_index(0), m_numCameras(0), m_connected(false)
 {
   getNumCameras();
 }
@@ -98,10 +98,8 @@ std::ostream &vpPylonGrabberGigE::getCameraInfo(std::ostream &os)
   os << " Serial number      : " << deviceInfo.GetSerialNumber() << std::endl;
   os << " Camera model       : " << deviceInfo.GetModelName() << std::endl;
   os << " Camera vendor      : " << deviceInfo.GetVendorName() << std::endl;
-  os << " Resolution         : " << widthMax->GetValue() << "x"
-     << heightMax->GetValue() << std::endl;
-  os << " Firmware version   : " << deviceInfo.GetDeviceVersion()
-     << std::endl;
+  os << " Resolution         : " << widthMax->GetValue() << "x" << heightMax->GetValue() << std::endl;
+  os << " Firmware version   : " << deviceInfo.GetDeviceVersion() << std::endl;
 
   return os;
 }
@@ -152,8 +150,7 @@ float vpPylonGrabberGigE::getGain()
   else if (GenApi::IsReadable(m_camera.GainRaw))
     return m_camera.GainRaw.GetValue();
   else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to get gain.");
+    throw vpException(vpException::notImplementedError, "Don't know how to get gain.");
 }
 
 /*!
@@ -176,8 +173,7 @@ float vpPylonGrabberGigE::getBlackLevel()
   else if (GenApi::IsReadable(m_camera.BlackLevelRaw))
     return m_camera.BlackLevelRaw.GetValue();
   else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to get blacklevel.");
+    throw vpException(vpException::notImplementedError, "Don't know how to get blacklevel.");
 }
 
 /*!
@@ -200,8 +196,7 @@ float vpPylonGrabberGigE::getExposure()
   else if (GenApi::IsReadable(m_camera.ExposureTimeRaw))
     return m_camera.ExposureTimeRaw.GetValue();
   else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to get exposure.");
+    throw vpException(vpException::notImplementedError, "Don't know how to get exposure.");
 }
 
 /*!
@@ -229,10 +224,8 @@ std::string vpPylonGrabberGigE::getCameraSerial(unsigned int index)
   getNumCameras();
 
   if (index >= m_numCameras) {
-    throw(vpException(
-        vpException::badValue,
-        "The camera with index %u is not present. Only %d cameras connected.",
-        index, m_numCameras));
+    throw(vpException(vpException::badValue, "The camera with index %u is not present. Only %d cameras connected.",
+                      index, m_numCameras));
   }
 
   Pylon::CTlFactory &TlFactory = Pylon::CTlFactory::GetInstance();
@@ -281,8 +274,7 @@ vpPylonGrabber::UserSetName vpPylonGrabberGigE::getUserSetDefault()
 {
   connect();
 
-  Basler_GigECamera::UserSetDefaultSelectorEnums user_set =
-      m_camera.UserSetDefaultSelector.GetValue();
+  Basler_GigECamera::UserSetDefaultSelectorEnums user_set = m_camera.UserSetDefaultSelector.GetValue();
 
   switch (user_set) {
   case Basler_GigECamera::UserSetDefaultSelector_Default:
@@ -321,10 +313,8 @@ vpPylonGrabber::UserSetName vpPylonGrabberGigE::getUserSetDefault()
 void vpPylonGrabberGigE::setCameraIndex(unsigned int index)
 {
   if (index >= m_numCameras) {
-    throw(vpException(
-        vpException::badValue,
-        "The camera with index %u is not present. Only %d cameras connected.",
-        index, m_numCameras));
+    throw(vpException(vpException::badValue, "The camera with index %u is not present. Only %d cameras connected.",
+                      index, m_numCameras));
   }
 
   m_index = index;
@@ -345,8 +335,7 @@ void vpPylonGrabberGigE::setCameraSerial(const std::string &serial)
       return;
     }
   }
-  throw(vpException(vpException::badValue,
-                    "The camera with serial id %u is not present.", serial));
+  throw(vpException(vpException::badValue, "The camera with serial id %s is not present.", serial.c_str()));
 }
 
 /*!
@@ -394,8 +383,7 @@ float vpPylonGrabberGigE::setGain(bool gain_auto, float gain_value)
     m_camera.GainRaw.SetValue(gain_value);
     return m_camera.GainRaw.GetValue();
   } else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to set gain.");
+    throw vpException(vpException::notImplementedError, "Don't know how to set gain.");
 }
 
 /*!
@@ -423,8 +411,7 @@ float vpPylonGrabberGigE::setBlackLevel(float blacklevel_value)
     m_camera.BlackLevelRaw.SetValue(blacklevel_value);
     return m_camera.BlackLevelRaw.GetValue();
   } else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to set blacklevel.");
+    throw vpException(vpException::notImplementedError, "Don't know how to set blacklevel.");
 }
 
 /*!
@@ -444,8 +431,7 @@ exposure applying \e exposure_value parameter.
   https://www.ptgrey.com/kb/11020?countryid=237
   \sa getExposure()
  */
-float vpPylonGrabberGigE::setExposure(bool exposure_on, bool exposure_auto,
-                                      float exposure_value)
+float vpPylonGrabberGigE::setExposure(bool exposure_on, bool exposure_auto, float exposure_value)
 {
   connect();
 
@@ -455,8 +441,7 @@ float vpPylonGrabberGigE::setExposure(bool exposure_on, bool exposure_auto,
     m_camera.ExposureMode.SetValue(Basler_GigECamera::ExposureMode_Off);
 
   if (exposure_auto)
-    m_camera.ExposureAuto.SetValue(
-        Basler_GigECamera::ExposureAuto_Continuous);
+    m_camera.ExposureAuto.SetValue(Basler_GigECamera::ExposureAuto_Continuous);
   else
     m_camera.ExposureAuto.SetValue(Basler_GigECamera::ExposureAuto_Off);
 
@@ -467,8 +452,7 @@ float vpPylonGrabberGigE::setExposure(bool exposure_on, bool exposure_auto,
     m_camera.ExposureTimeRaw.SetValue(exposure_value);
     return m_camera.ExposureTimeRaw.GetValue();
   } else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to set exposure.");
+    throw vpException(vpException::notImplementedError, "Don't know how to set exposure.");
 }
 
 /*!
@@ -494,8 +478,7 @@ float vpPylonGrabberGigE::setGamma(bool gamma_on, float gamma_value)
     m_camera.Gamma.SetValue(gamma_value);
     return m_camera.Gamma.GetValue();
   } else
-    throw vpException(vpException::notImplementedError,
-                      "Don't know how to set gamma.");
+    throw vpException(vpException::notImplementedError, "Don't know how to set gamma.");
 }
 
 /*!
@@ -542,23 +525,19 @@ bool vpPylonGrabberGigE::setUserSetDefault(UserSetName user_set)
 
   switch (user_set) {
   case USERSET_DEFAULT:
-    m_camera.UserSetDefaultSelector.SetValue(
-        Basler_GigECamera::UserSetDefaultSelector_Default);
+    m_camera.UserSetDefaultSelector.SetValue(Basler_GigECamera::UserSetDefaultSelector_Default);
     return true;
     break;
   case USERSET_USERSET1:
-    m_camera.UserSetDefaultSelector.SetValue(
-        Basler_GigECamera::UserSetDefaultSelector_UserSet1);
+    m_camera.UserSetDefaultSelector.SetValue(Basler_GigECamera::UserSetDefaultSelector_UserSet1);
     return true;
     break;
   case USERSET_USERSET2:
-    m_camera.UserSetDefaultSelector.SetValue(
-        Basler_GigECamera::UserSetDefaultSelector_UserSet2);
+    m_camera.UserSetDefaultSelector.SetValue(Basler_GigECamera::UserSetDefaultSelector_UserSet2);
     return true;
     break;
   case USERSET_USERSET3:
-    m_camera.UserSetDefaultSelector.SetValue(
-        Basler_GigECamera::UserSetDefaultSelector_UserSet3);
+    m_camera.UserSetDefaultSelector.SetValue(Basler_GigECamera::UserSetDefaultSelector_UserSet3);
     return true;
     break;
   default:
@@ -676,9 +655,8 @@ void vpPylonGrabberGigE::acquire(vpImage<unsigned char> &I)
   Pylon::CGrabResultPtr grabResult;
   // Retrieve an image
   if (!m_camera.RetrieveResult(2000, grabResult)) {
-    throw(vpException(vpException::fatalError,
-                      "Cannot retrieve image from camera with serial %u",
-                      getCameraSerial(m_index)));
+    throw(vpException(vpException::fatalError, "Cannot retrieve image from camera with serial %s",
+                      getCameraSerial(m_index).c_str()));
   }
 
   if (grabResult->GrabSucceeded()) {
@@ -690,8 +668,7 @@ void vpPylonGrabberGigE::acquire(vpImage<unsigned char> &I)
     imageConvert.OutputPixelFormat = Pylon::PixelType_Mono8;
     imageConvert.OutputPaddingX = 0;
     // Create a converted image
-    imageConvert.Convert(I.bitmap, sizeof(unsigned char) * width * height,
-                         (Pylon::IImage &)grabResult);
+    imageConvert.Convert(I.bitmap, sizeof(unsigned char) * width * height, (Pylon::IImage &)grabResult);
   }
 }
 
@@ -707,9 +684,8 @@ void vpPylonGrabberGigE::acquire(vpImage<vpRGBa> &I)
   Pylon::CGrabResultPtr grabResult;
   // Retrieve an image
   if (!m_camera.RetrieveResult(2000, grabResult)) {
-    throw(vpException(vpException::fatalError,
-                      "Cannot retrieve image from camera with serial %u",
-                      getCameraSerial(m_index)));
+    throw(vpException(vpException::fatalError, "Cannot retrieve image from camera with serial %s",
+                      getCameraSerial(m_index).c_str()));
   }
 
   if (grabResult->GrabSucceeded()) {
@@ -787,23 +763,19 @@ bool vpPylonGrabberGigE::selectUserSet(UserSetName user_set)
 
   switch (user_set) {
   case USERSET_DEFAULT:
-    m_camera.UserSetSelector.SetValue(
-        Basler_GigECamera::UserSetSelector_Default);
+    m_camera.UserSetSelector.SetValue(Basler_GigECamera::UserSetSelector_Default);
     return true;
     break;
   case USERSET_USERSET1:
-    m_camera.UserSetSelector.SetValue(
-        Basler_GigECamera::UserSetSelector_UserSet1);
+    m_camera.UserSetSelector.SetValue(Basler_GigECamera::UserSetSelector_UserSet1);
     return true;
     break;
   case USERSET_USERSET2:
-    m_camera.UserSetSelector.SetValue(
-        Basler_GigECamera::UserSetSelector_UserSet2);
+    m_camera.UserSetSelector.SetValue(Basler_GigECamera::UserSetSelector_UserSet2);
     return true;
     break;
   case USERSET_USERSET3:
-    m_camera.UserSetSelector.SetValue(
-        Basler_GigECamera::UserSetSelector_UserSet3);
+    m_camera.UserSetSelector.SetValue(Basler_GigECamera::UserSetSelector_UserSet3);
     return true;
     break;
   default:

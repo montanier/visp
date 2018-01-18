@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -46,32 +47,35 @@
 
 int main()
 {
+#if !(defined(_WIN32) && (_WIN32_WINNT < 0x0603))
   try {
     std::string servername = "localhost";
     unsigned int port = 35000;
 
     vpClient client;
     client.connectToHostname(servername, port);
-    //client.connectToIP("127.0.0.1",port);
+    // client.connectToIP("127.0.0.1",port);
 
     int val = 0;
 
-    while(1)
-    {
-      if(client.send(&val) != sizeof(int)) //Sending the new value to the first client
+    while (1) {
+      if (client.send(&val) != sizeof(int)) // Sending the new value to the first client
         std::cout << "Error while sending" << std::endl;
       else
         std::cout << "Sending : " << val << std::endl;
 
-      if(client.receive(&val) != sizeof(int)) //Receiving a value from the first client
+      if (client.receive(&val) != sizeof(int)) // Receiving a value from the first client
         std::cout << "Error while receiving" << std::endl;
       else
         std::cout << "Received : " << val << std::endl;
     }
     return 0;
-  }
-  catch(vpException &e) {
+  } catch (vpException &e) {
     std::cout << "Catch an exception: " << e << std::endl;
     return 1;
   }
+#else
+  std::cout << "This test doesn't work on platform prior to win 8.1" << std::endl;
+  return EXIT_SUCCESS;
+#endif
 }

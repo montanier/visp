@@ -3,9 +3,10 @@
  * This file is part of the ViSP software.
  * Copyright (C) 2005 - 2017 by Inria. All rights reserved.
  *
- * This software is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * ("GPL") version 2 as published by the Free Software Foundation.
+ * This software is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  * See the file LICENSE.txt at the root directory of this source
  * distribution for additional information about the GNU GPL.
  *
@@ -45,13 +46,13 @@
 #define vpMeTracker_HH
 
 #include <visp3/core/vpColVector.h>
-#include <visp3/me/vpMeSite.h>
-#include <visp3/me/vpMe.h>
 #include <visp3/core/vpTracker.h>
+#include <visp3/me/vpMe.h>
+#include <visp3/me/vpMeSite.h>
 
-#include <math.h>
 #include <iostream>
 #include <list>
+#include <math.h>
 
 /*!
   \class vpMeTracker
@@ -70,48 +71,45 @@ protected:
 #endif
   //! Tracking dependent variables/functions
   //! List of tracked moving edges points.
-  std::list<vpMeSite> list ;
+  std::list<vpMeSite> list;
   //! Moving edges initialisation parameters
-  vpMe *me ;
+  vpMe *me;
   unsigned int init_range;
   int nGoodElement;
 
 protected:
-  vpMeSite::vpMeSiteDisplayType selectDisplay ;
+  vpMeSite::vpMeSiteDisplayType selectDisplay;
 
 public:
   // Constructor/Destructor
-  vpMeTracker() ;
-  vpMeTracker(const vpMeTracker& meTracker) ;
-  virtual ~vpMeTracker() ;
+  vpMeTracker();
+  vpMeTracker(const vpMeTracker &meTracker);
+  virtual ~vpMeTracker();
 
-  void init() ;
-  void initTracking(const vpImage<unsigned char>& I);
+  void init();
+  void initTracking(const vpImage<unsigned char> &I);
 
   //! Track sampled pixels.
-  void track(const vpImage<unsigned char>& I);
+  void track(const vpImage<unsigned char> &I);
 
-  unsigned int numberOfSignal() ;
-  unsigned int totalNumberOfSignal() ;
+  unsigned int numberOfSignal();
+  unsigned int totalNumberOfSignal();
 
-  virtual void  display(const vpImage<unsigned char> &I, vpColor col)=0;
-  virtual void  display(const vpImage<unsigned char>& I);
-  void          display(const vpImage<unsigned char>& I, vpColVector &w, unsigned int &index_w);
+  virtual void display(const vpImage<unsigned char> &I, vpColor col) = 0;
+  virtual void display(const vpImage<unsigned char> &I);
+  void display(const vpImage<unsigned char> &I, vpColVector &w, unsigned int &index_w);
 
-  void setDisplay(vpMeSite::vpMeSiteDisplayType select)  {
-    selectDisplay = select ;
-  }
+  void setDisplay(vpMeSite::vpMeSiteDisplayType select) { selectDisplay = select; }
 
-  vpMeTracker& operator =(vpMeTracker& f);
+  vpMeTracker &operator=(vpMeTracker &f);
 
-  int outOfImage(int i, int j, int half, int row , int cols);
+  int outOfImage(int i, int j, int half, int row, int cols);
   int outOfImage(const vpImagePoint &iP, int half, int rows, int cols);
 
   void reset();
 
-  //!Sample pixels at a given interval
-  virtual void sample(const vpImage<unsigned char> &image)=0;
-
+  //! Sample pixels at a given interval
+  virtual void sample(const vpImage<unsigned char> &image) = 0;
 
   /*!
     Set the initial range.
@@ -132,14 +130,14 @@ public:
 
     \param p_me : Moving Edges.
   */
-  void setMe(vpMe *p_me) { this->me = p_me ; }
+  void setMe(vpMe *p_me) { this->me = p_me; }
 
   /*!
     Return the moving edges initialisation parameters
 
     \return Moving Edges.
   */
-  inline vpMe* getMe(){ return me; }
+  inline vpMe *getMe() { return me; }
 
   /*!
     Set the list of moving edges
@@ -153,7 +151,7 @@ public:
 
     \return List of Moving Edges.
   */
-  inline std::list<vpMeSite>& getMeList() { return list; }
+  inline std::list<vpMeSite> &getMeList() { return list; }
   inline std::list<vpMeSite> getMeList() const { return list; }
 
   /*!
@@ -166,11 +164,8 @@ public:
 #ifdef VISP_BUILD_DEPRECATED_FUNCTIONS
 public:
   int query_range;
-  bool display_point;// if 1 (TRUE) displays the line that is being tracked
+  bool display_point; // if 1 (TRUE) displays the line that is being tracked
 #endif
 };
 
-
 #endif
-
-
